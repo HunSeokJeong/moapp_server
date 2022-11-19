@@ -26,7 +26,6 @@ class GroupAPI(APIView):
         if serializer.is_valid():
             group=serializer.save(author=request.user.user_profile)
             group.member.add(request.user.user_profile)
-            group.member.save()
             return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     def get(self,request):

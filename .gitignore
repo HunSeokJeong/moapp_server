@@ -1,4 +1,4 @@
 
 *.jpg
 /myvenv
-my_setting.py
+my_settings.py

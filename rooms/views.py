@@ -37,14 +37,14 @@ class GroupAPI(APIView):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def showmeminvite(request):
-    group=Group.objects.get(pk=request.GET['groupid'])
+    group=Group.objects.get(pk=request.GET['group'])
     return Response({"member_list":ProfileSerializer(group.memberinvite.all(),many=True).data},status=status.HTTP_200_OK)
 
 #그룹 멤버 확인
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def showmem(request):
-    group=Group.objects.get(pk=request.GET['groupid'])
+    group=Group.objects.get(pk=request.GET['group'])
     return Response({"member_list":ProfileSerializer(group.member.all(),many=True).data},status=status.HTTP_200_OK)
 
 #초대요청 보내기
@@ -62,7 +62,7 @@ def requestinvite(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def addmember(request):
-    group=Group.objects.get(pk=request.data.get('groupid'))
+    group=Group.objects.get(pk=request.data.get('group'))
     if group.author!=request.user.user_profile :
         return Response({"error":"그룹에 관한 권한이 없습니다."},status=status.HTTP_406_NOT_ACCEPTABLE)
     newmem=Profile.objects.get(pk=request.data.get("newmember"))
@@ -78,7 +78,7 @@ class RoomAPI(APIView):
     def post(self,request):
         serializer= RoomSerializer(data=request.data)
         if serializer.is_valid():
-            group=Group.objects.get(pk=request.data.get('groupid'))
+            group=Group.objects.get(pk=request.data.get('group'))
             if group.author!=request.user.user_profile :
                 return Response({"error":"그룹에 관한 권한이 없습니다."},status=status.HTTP_406_NOT_ACCEPTABLE)
 
@@ -87,7 +87,7 @@ class RoomAPI(APIView):
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
     def get(self,request):
-        group = Group.objects.get(pk=request.GET['groupid'])
+        group = Group.objects.get(pk=request.GET['group'])
         rooms = group.group_room.all()
         serializer = RoomSerializer(rooms,many=True)
         return Response({"roomlist":serializer.data},status=status.HTTP_200_OK)
@@ -131,7 +131,7 @@ def get_static(room, user, period):
 
 @api_view(['POST'])
 def updatestatic(request):
-    group=Group.objects.get(pk=request.data.get("groupid"))
+    group=Group.objects.get(pk=request.data.get("group"))
     for room in group.group_room.all():
         for member in group.member.all():
             print(room,member)

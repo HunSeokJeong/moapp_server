@@ -139,8 +139,17 @@ def updatestatic(request):
 
     # get_static(2,1,3)
     return Response(status=status.HTTP_200_OK)
+
+
 class StaticsViewSet(viewsets.ModelViewSet):
     queryset = Statics.objects.all()
     serializer_class = StaticsSerializer
     filter_backends = [DjangoFilterBackend] # 👈 DjangoFilterBackend 지정
     filterset_fields = ['room', 'user'] # 👈 filtering 기능을 사용할 field 입력
+
+    def list(self, request, *args, **kwargs):
+        statics = Statics.objects.all()
+        statics = self.filter_queryset(statics)
+
+        serializer = self.get_serializer(statics, many=True)
+        return Response({"liststatics":serializer.data}, status=status.HTTP_200_OK)

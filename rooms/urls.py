@@ -13,7 +13,7 @@ urlpatterns = [
     path("showmeminvite/",showmeminvite),
     path("showmem/",showmem),
     path("updatestatic/",updatestatic),
+    path("updatestatic/",updatestatic),
     path("room/",RoomAPI.as_view()),
-    path("",include(router.urls)),
     path("statics/",StaticsViewSet.as_view({'get':'list'})),
 ]

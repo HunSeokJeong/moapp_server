@@ -112,6 +112,14 @@ class HistoryViewSet(viewsets.ModelViewSet):
             room.last_history = history
             room.save()
 
+    def list(self, request, *args, **kwargs):
+        historys = History.objects.all()
+        historys = self.filter_queryset(historys)
+
+        serializer = self.get_serializer(historys, many=True)
+        return Response({"listhistory":serializer.data}, status=status.HTTP_200_OK)
+
+
 
 def get_static(room, user, period):
     histories = History.objects.filter(room=room,author=user,event=0)

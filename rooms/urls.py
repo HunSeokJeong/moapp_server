@@ -16,4 +16,5 @@ urlpatterns = [
     path("updatestatic/",updatestatic),
     path("room/",RoomAPI.as_view()),
     path("statics/",StaticsViewSet.as_view({'get':'list'})),
+    path("",include(router.urls)),
 ]

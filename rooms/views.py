@@ -58,6 +58,17 @@ def requestinvite(request):
     print(serializer.data)
     return Response(serializer.data,status=status.HTTP_200_OK)
 
+#코드로 그룹에 들어가기
+@permission_classes([IsAuthenticated])
+@api_view(['POST'])
+def getintogroup(request):
+    group=Group.objects.get(groupcode=request.data.get('groupcode'))
+    group.member.add(request.user.user_profile)
+    group.save()
+    serializer= GroupSerializer(group)
+    print(serializer.data)
+    return Response(serializer.data,status=status.HTTP_200_OK)
+
 #멤버 추가
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])

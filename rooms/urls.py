@@ -1,6 +1,6 @@
 from django.urls import path,include
 from .views import GroupAPI,requestinvite,addmember,RoomAPI,showmeminvite\
-    ,showmem, HistoryViewSet,updatestatic,StaticsViewSet
+    ,showmem, HistoryViewSet,updatestatic,StaticsViewSet,getintogroup
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -13,7 +13,7 @@ urlpatterns = [
     path("showmeminvite/",showmeminvite),
     path("showmem/",showmem),
     path("updatestatic/",updatestatic),
-    path("updatestatic/",updatestatic),
+    path("getintogroup/",getintogroup),
     path("room/",RoomAPI.as_view()),
     path("statics/",StaticsViewSet.as_view({'get':'list'})),
     path("",include(router.urls)),

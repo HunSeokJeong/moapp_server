@@ -125,7 +125,7 @@ class HistoryViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         historys = History.objects.all()
-        historys = self.filter_queryset(historys)
+        historys = self.filter_queryset(historys).order_by('-create_date')
 
         serializer = self.get_serializer(historys, many=True)
         return Response({"listhistory":serializer.data}, status=status.HTTP_200_OK)

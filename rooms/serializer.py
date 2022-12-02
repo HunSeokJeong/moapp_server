@@ -46,6 +46,7 @@ class RoomSerializer(serializers.ModelSerializer):
 
 
 class StaticsSerializer(serializers.ModelSerializer):
+    user=ProfileSerializer(read_only=True)
     class Meta:
         model = Statics
         fields = ('user','room','date','score')

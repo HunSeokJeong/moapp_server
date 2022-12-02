@@ -61,3 +61,4 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ('nickname','icon','state_message','user')
+

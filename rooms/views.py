@@ -7,6 +7,7 @@ from rest_framework.authtoken.models  import Token
 from .models import Group,Room,History,Statics
 from users.models import Profile,User
 from rest_framework.response import Response
+from django.db.models import Sum
 from .serializer import GroupCreateSerializer, GroupSerializer, \
     RoomSerializer, HistorySerializer,HistoryCreateSerializer,\
         ProfileSerializer,UserSerializer,StaticsSerializer
@@ -74,8 +75,8 @@ def getintogroup(request):
 @permission_classes([IsAuthenticated])
 def addmember(request):
     group=Group.objects.get(pk=request.data.get('group'))
-    if group.author!=request.user.user_profile :
-        return Response({"error":"그룹에 관한 권한이 없습니다."},status=status.HTTP_406_NOT_ACCEPTABLE)
+    # if group.author!=request.user.user_profile :
+    #     return Response({"error":"그룹에 관한 권한이 없습니다."},status=status.HTTP_406_NOT_ACCEPTABLE)
     newmem=Profile.objects.get(pk=request.data.get("newmember"))
     group.member.add(newmem)
     group.memberinvite.remove(newmem)

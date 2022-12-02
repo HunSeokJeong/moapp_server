@@ -91,8 +91,8 @@ class RoomAPI(APIView):
         serializer= RoomSerializer(data=request.data)
         if serializer.is_valid():
             group=Group.objects.get(pk=request.data.get('group'))
-            if group.author!=request.user.user_profile :
-                return Response({"error":"그룹에 관한 권한이 없습니다."},status=status.HTTP_406_NOT_ACCEPTABLE)
+            # if group.author!=request.user.user_profile :
+            #     return Response({"error":"그룹에 관한 권한이 없습니다."},status=status.HTTP_406_NOT_ACCEPTABLE)
 
             serializer.save()
             return Response(serializer.data,status=status.HTTP_200_OK)

@@ -37,13 +37,18 @@ class HistorySerializer(serializers.ModelSerializer):
         fields = ('id','room','author','create_date','modify_date','event','image','text')
 
 
+class RoomCreateSerializer(serializers.ModelSerializer):
+    last_history= HistorySerializer(read_only=True)
+    class Meta:
+        model = Room
+        fields = ('id','group','manager','title','size','period',"last_history")
+
 class RoomSerializer(serializers.ModelSerializer):
     last_history= HistorySerializer(read_only=True)
     manager = ProfileSerializer(read_only=True)
     class Meta:
         model = Room
         fields = ('id','group','manager','title','size','period',"last_history")
-
 
 
 class StaticsSerializer(serializers.ModelSerializer):

@@ -9,7 +9,7 @@ from users.models import Profile,User
 from rest_framework.response import Response
 from django.db.models import Sum
 from .serializer import GroupCreateSerializer, GroupSerializer, \
-    RoomSerializer, HistorySerializer,HistoryCreateSerializer,\
+    RoomSerializer,RoomCreateSerializer, HistorySerializer,HistoryCreateSerializer,\
         ProfileSerializer,UserSerializer,StaticsSerializer,GroupStaticsSerializer
 
 from .permissions import CustomOnly
@@ -88,7 +88,7 @@ class RoomAPI(APIView):
     # def get(self,request):
     #     members = request.user
     def post(self,request):
-        serializer= RoomSerializer(data=request.data)
+        serializer= RoomCreateSerializer(data=request.data)
         if serializer.is_valid():
             group=Group.objects.get(pk=request.data.get('group'))
             # if group.author!=request.user.user_profile :
@@ -120,7 +120,10 @@ class HistoryViewSet(viewsets.ModelViewSet):
         history = serializer.save(author=self.request.user.user_profile)
         if self.request.data.get('event')=='0' :
             print("ok")
+            stat=Statics.objects.get(room=self.request.data.get('room'),user=self.request.user.user_profile)
             room=Room.objects.get(id=self.request.data.get('room'))
+            stat.score=stat.score+room.size
+            stat.save()
             room.last_history = history
             room.save()
 

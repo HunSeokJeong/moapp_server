@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from django.db.models import Sum
 from .serializer import GroupCreateSerializer, GroupSerializer, \
     RoomSerializer, HistorySerializer,HistoryCreateSerializer,\
-        ProfileSerializer,UserSerializer,StaticsSerializer
+        ProfileSerializer,UserSerializer,StaticsSerializer,GroupStaticsSerializer
 
 from .permissions import CustomOnly
 import datetime
@@ -173,3 +173,16 @@ class StaticsViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(statics, many=True)
         return Response({"liststatics":serializer.data}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def getgroupstatic(request):
+    group=Group.objects.get(pk=request.GET["group"])
+    rooms=group.group_room.all()
+    Group_statics=Statics.objects.none()
+    for room in rooms:
+        statics = room.room_statics.all()
+        Group_statics =Group_statics|statics
+    Group_statics=Group_statics.values('user').order_by('user').annotate(total_score=Sum('score'))
+    print(Group_statics)
+    # get_static(2,1,3)
+    return Response({"scorelist":Group_statics},status=status.HTTP_200_OK)

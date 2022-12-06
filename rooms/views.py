@@ -120,10 +120,18 @@ class HistoryViewSet(viewsets.ModelViewSet):
         history = serializer.save(author=self.request.user.user_profile)
         if self.request.data.get('event')=='0' :
             print("ok")
-            stat=Statics.objects.get(room=self.request.data.get('room'),user=self.request.user.user_profile)
             room=Room.objects.get(id=self.request.data.get('room'))
-            stat.score=stat.score+room.size
-            stat.save()
+            try: 
+                stat=Statics.objects.get(room=self.request.data.get('room'),user=self.request.user.user_profile)
+                stat.score=stat.score+room.size
+                stat.save()
+            except:
+                Statics.objects.update_or_create(
+                    room=room,
+                    user=self.request.user.user_profile,
+                    defaults={"score":room.size}
+                )
+                
             room.last_history = history
             room.save()
 

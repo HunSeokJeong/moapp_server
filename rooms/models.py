@@ -31,7 +31,7 @@ class History(models.Model):
     create_date = models.DateTimeField(auto_now_add=True)
     modify_date = models.DateTimeField(auto_now=True)
     event = models.IntegerField(default=0) #0: 청소 1: 건의 2: 불만
-    image = models.ImageField(null=True,upload_to ='post/')
+    image = models.ImageField(null=True,blank=True,upload_to ='post/')
     text = models.CharField(max_length=300,default="")
 
 class Statics(models.Model):
